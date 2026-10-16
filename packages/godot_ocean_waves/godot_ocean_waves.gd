@@ -84,4 +84,8 @@ func _physics_process(delta: float) -> void:
 		wind_audio_player.volume_db = lerpf(5.0, -30.0, minf(wind_speed/15.0, 1.0))
 
 func get_height(world_pos: Vector3) -> float:
-	return water.get_height(world_pos);
+	if not enable_get_height:
+		push_error('"Enable Get Height" is disabled on the GodotOceanWaves node. Please enable it in the node to use this function.')
+		return 0.0
+
+	return water.get_height(world_pos)
