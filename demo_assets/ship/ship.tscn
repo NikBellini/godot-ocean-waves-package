@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://bjiukr1xd5r8g"]
+
+[ext_resource type="PackedScene" uid="uid://bh2yjrmihx2iy" path="res://demo_assets/ship/assets/ship_model.glb" id="1_85l31"]
+[ext_resource type="Script" uid="uid://cvcs3eogonka8" path="res://packages/godot_ocean_waves/assets/buoyancy/buoyancy.gd" id="1_dye4r"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_yxdru"]
+size = Vector3(4.719757, 10.292221, 11.029358)
+
+[node name="Ship" type="RigidBody3D" unique_id=1670425452]
+script = ExtResource("1_dye4r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2085241735]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.03944397, 5.1126175, -0.08389282)
+shape = SubResource("BoxShape3D_yxdru")
+
+[node name="FloatPoints" type="Node3D" parent="." unique_id=1378400571]
+
+[node name="FloatPointFrontLeft" type="Marker3D" parent="FloatPoints" unique_id=1243902701]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.8022179, 0.7398466, 3.006832)
+
+[node name="FloatPointFrontRight" type="Marker3D" parent="FloatPoints" unique_id=1182305970]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.802, 0.7398466, 3.007)
+
+[node name="FloatPointMiddleLeft" type="Marker3D" parent="FloatPoints" unique_id=1271584031]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97, 0.7398466, -0.5052569)
+
+[node name="FloatPointMiddleRight" type="Marker3D" parent="FloatPoints" unique_id=1280611865]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.97, 0.7398466, -0.505)
+
+[node name="FloatPointRearLeft" type="Marker3D" parent="FloatPoints" unique_id=635356024]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.97, 0.7398466, -3.884)
+
+[node name="FloatPointRearRight" type="Marker3D" parent="FloatPoints" unique_id=2111349180]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.9703627, 0.7398466, -3.8836198)
+
+[node name="ShipModel" parent="." unique_id=698651959 instance=ExtResource("1_85l31")]
