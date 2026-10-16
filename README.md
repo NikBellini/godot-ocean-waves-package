@@ -41,7 +41,7 @@ your-project/
 
 ## Example Scene
 
-The package includes example.tscn, a sample scene that demonstrates the ocean system in a working scene.
+The package includes `example.tscn`, a sample scene that demonstrates the ocean system in a working scene.
 
 Use it to inspect the setup, explore the available rendering features, and understand how the ocean is integrated into a Godot scene before adding it to your own project.
 
