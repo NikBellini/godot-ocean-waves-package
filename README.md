@@ -16,9 +16,10 @@ This repository builds upon the original work by [2Retr0](https://github.com/2Re
 ## Changes in This Package
 
 - Updated compatibility for Godot 4.7.
-- Uses `RenderingDevice.texture_get_data_async()` to retrieve displacement texture data asynchronously, avoiding a blocking readback on the main loop.
-- Packages the ocean system for integration into other Godot projects.
+- Simplifies and consolidates the ocean system into a single, easy-to-import scene, making integration into other Godot projects straightforward.
 - Uses a single cascade for simplicity and improved height consistency when sampling the ocean texture. The original project uses three cascades, and although each cascade could have its own parameters, this implementation uses a single cascade to simplify the setup and avoid the reduced accuracy observed when retrieving ocean height with multiple cascades. This also keeps the Inspector intuitive, exposing only one set of parameters to the user. While a single cascade may make texture repetition more noticeable at greater distances, the resulting quality is acceptable for the intended use case.
+- Exposes only the essential parameters in the Inspector to provide a simple, plug-and-play experience with minimal setup. This reduces the amount of control available through the Inspector in favor of ease of use. Users who require more advanced customization can modify the underlying scripts and shaders.
+- Uses `RenderingDevice.texture_get_data_async()` to retrieve displacement texture data asynchronously, avoiding a blocking readback on the main loop.
 
 This repository is an independent derivative of the original project. The original implementation and its development history belong to their respective authors.
 
@@ -48,6 +49,16 @@ Use it to inspect the setup, explore the available rendering features, and under
 Scene behavior and visual results may depend on the project's rendering settings, environment, and lighting configuration.
 
 ## Features and Modifications
+
+## Parameters
+
+- **`player`**: The player node used to shift the water mesh when moving into a new tile, allowing the ocean to follow the player and simulate an infinite ocean.
+- **`water_color`**: The color used to tint the water material for different water appearances or artistic purposes.
+- **`foam_color`**: The color used to tint the foam material for artistic purposes.
+- **`wind_speed`**: The wind speed above the water, in meters per second. Higher values generally produce steeper, more chaotic waves with increased foam.
+- **`wind_direction`**: The wind direction in degrees, affecting the direction of the waves. `0°` points along the positive X axis, while `90°` points along the positive Z axis.
+- **`enable_audio`**: Enables or disables ocean and wind audio.
+- **`enable_get_height`**: Enables or disables the `get_height()` function. Disable this option if you don't need to retrieve the water height at specific points. This avoids unnecessary GPU readback of the displacement texture, improving performance. Calling `get_height()` while this option is disabled will raise an error.
 
 ### Water Height Queries
 
