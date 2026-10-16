@@ -70,7 +70,7 @@ get_height(world_pos: Vector3) -> float
 
 This can be useful for gameplay systems that need to estimate the water surface height, such as floating objects, character interactions, and buoyancy calculations.
 
-The result depends on the wave simulation and the implementation's sampling accuracy.
+**Note:** Since `get_height()` relies on an asynchronous GPU readback, the returned height may be delayed by several frames (typically a few, depending on GPU workload and readback latency).
 
 ### Asynchronous Displacement Texture Readback
 
