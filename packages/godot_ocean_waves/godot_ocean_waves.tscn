@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://dx4r13gqfh13"]
+
+[ext_resource type="Script" uid="uid://dj3qlu7uupdmi" path="res://packages/godot_ocean_waves/godot_ocean_waves.gd" id="1_1tn6m"]
+[ext_resource type="Material" uid="uid://byumtcccq4ew3" path="res://packages/godot_ocean_waves/assets/water/mat_water.tres" id="2_6lrn7"]
+[ext_resource type="ArrayMesh" uid="uid://ix4vp1y05f1s" path="res://packages/godot_ocean_waves/assets/water/clipmap_high.obj" id="3_7j8wi"]
+[ext_resource type="Script" uid="uid://dbxip3y4rh1va" path="res://packages/godot_ocean_waves/assets/water/water.gd" id="4_tkcsj"]
+[ext_resource type="Script" uid="uid://cqbpvt36rest3" path="res://packages/godot_ocean_waves/assets/water/wave_cascade_parameters.gd" id="5_g55gr"]
+[ext_resource type="Shader" uid="uid://cfkil18smyukv" path="res://packages/godot_ocean_waves/assets/shaders/spatial/sea_spray.gdshader" id="6_5cnr7"]
+[ext_resource type="Texture2D" uid="uid://dtm5tyuh2slqt" path="res://packages/godot_ocean_waves/assets/water/sea_spray.png" id="7_enafo"]
+[ext_resource type="Material" uid="uid://5xqyddws6rt5" path="res://packages/godot_ocean_waves/assets/water/mat_spray.tres" id="8_ktrim"]
+[ext_resource type="AudioStream" uid="uid://cvvn0vke5comw" path="res://packages/godot_ocean_waves/assets/ocean_loop.wav" id="9_ut3iq"]
+[ext_resource type="AudioStream" uid="uid://ck6vmandgjhy0" path="res://packages/godot_ocean_waves/assets/wind_loop.wav" id="10_wl2rd"]
+
+[sub_resource type="Resource" id="Resource_ycdy4"]
+script = ExtResource("5_g55gr")
+tile_length = Vector2(88, 88)
+wind_speed = 10.0
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_k6xhe"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_tsx6q"]
+noise = SubResource("FastNoiseLite_k6xhe")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ds3o1"]
+render_priority = -1
+shader = ExtResource("6_5cnr7")
+shader_parameter/max_alpha = 0.666
+shader_parameter/albedo_texture = ExtResource("7_enafo")
+shader_parameter/dissolve_texture = SubResource("NoiseTexture2D_tsx6q")
+
+[sub_resource type="QuadMesh" id="QuadMesh_06d3e"]
+
+[node name="GodotOceanWaves" type="Node3D" unique_id=942576566]
+script = ExtResource("1_1tn6m")
+
+[node name="Water" type="MeshInstance3D" parent="." unique_id=1433010231]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, -75)
+sorting_offset = 999.0
+material_override = ExtResource("2_6lrn7")
+cast_shadow = 0
+extra_cull_margin = 700.0
+mesh = ExtResource("3_7j8wi")
+skeleton = NodePath("")
+script = ExtResource("4_tkcsj")
+parameters = Array[ExtResource("5_g55gr")]([SubResource("Resource_ycdy4")])
+updates_per_second = 40.0
+
+[node name="WaterSprayEmitter" type="GPUParticles3D" parent="Water" unique_id=183013396]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)
+material_override = SubResource("ShaderMaterial_ds3o1")
+cast_shadow = 0
+amount = 32768
+lifetime = 6.0
+process_material = ExtResource("8_ktrim")
+draw_pass_1 = SubResource("QuadMesh_06d3e")
+
+[node name="OceanAudioPlayer" type="AudioStreamPlayer" parent="." unique_id=402494563]
+stream = ExtResource("9_ut3iq")
+autoplay = true
+
+[node name="WindAudioPlayer" type="AudioStreamPlayer" parent="." unique_id=1130140568]
+stream = ExtResource("10_wl2rd")
+volume_db = -18.333334
+autoplay = true

@@ -1,33 +1,97 @@
-# This works on Godot 4.7.
-This fork adds compatibility of GodotOceanWaves for Godot 4.7 and the use of `RenderingDevice.texture_get_data_async` for retrieving displacement textures without blocking the main loop.
+# Godot Ocean Waves Package
 
-Thanks to [PR #20](https://github.com/2Retr0/GodotOceanWaves/pull/20) for making the project work on Godot 4.6.
-# NikBellini Fork of KrautDev Fork of GodotOceanWaves
-This fork aims to add several features to make this amazing ocean implementation usable in a Godot game project.
-### Functional
-#### Water Height at any Global Position
-- [x] Get current height of the water line at any world position. `water.gd` has `get_height(world_pos:Vector3, steps:int=3) -> float` that returns the global y value of a provided global position.
-- [X] Use `RenderingDevice.texture_get_data_async` for retrieving displacement textures without blocking the main loop.
-#### Buoyancy
-there are different approaches to do it for ships and other larger objects:
-  1) let the object sit on several buoy objects that create an upward force depending on the depth of the buoy in the water (https://www.fxguide.com/fxfeatured/assassins-creed-iii-the-tech-behind-or-beneath-the-action/)
-  2) calculate the forces on each triangle of a simplified mesh (https://www.gamedeveloper.com/programming/water-interaction-model-for-boats-in-video-games, https://www.gamedeveloper.com/programming/water-interaction-model-for-boats-in-video-games-part-2). Both solutions are quite old, but the latter seems very promising.
-### Appearence
-#### Clip Map Resolution and Size
-- [x] 8 kilometers clipmap with LOD
-#### Waterline Transition
-- [x] added a fade effect between the water and non-transparent geoemtries
-#### Depth dependend visibility of Objects
-Water appears blue if it is clear and the entering light contains blue light, but turqoise if it is shallow and turbulent. Here are some visualizations: (https://rwu.pressbooks.pub/webboceanography/chapter/6-5-light/)
-- [x] a transition is in place that simulates the absorption of red and green and finally blue light with increasing depth. The user can control these numbers in `water.gdshader` with the parameter `uniform vec3 depth_color_consumption = vec3(7.5, 22.0, 38.0);`. Coastal waters would absorb much more blue, so you would choose e.g. 18.0 for blue to make it greenish turqoise.
-- [x] water visibility range control
-- [ ] allow less clear water by mixing in the water color
-#### Keep Water out of Boats
-There are again different appraoches to not see the water surface in a boat:
-- [ ] mesh mask alpha above it (https://forum.godotengine.org/t/how-to-hide-the-water-plane-inside-a-boat/27380/2). That also means that any object with transparency cannot be seen in the boat. Also the mask only works as long as the camera is outside of the masking mesh.
-- [ ] vertex displacement: all vertices are pushed down to the height of the boat. I think it would work similarly to this https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://www.youtube.com/watch%3Fv%3DoMzI9DLgPKc&ved=2ahUKEwiPxsWouMqLAxUiYPEDHX9QAOIQtwJ6BAgQEAI&usg=AOvVaw0ws-MlQZ0GMym1ltAlimxn. The vertex shader would need a mask `M` that contains the difference between the water plane before displacements and the surface of the swimming body. Each vertex after displacement would query `M` with a UV that respects the summed displacements of the vertex and sets the Y coordinate accordingly. Since the water surface can be very large (e.g. 8 km), `M` would be much smaller and only roughly about the size of the boat. It would be necessary to scale and re-locate the adjusted UVs to query the correct position of a much smaller `M`.
+> [!WARNING]
+> **Work in Progress — Documentation May Not Reflect the Current Implementation**
+>
+> This package is still under active development. Some features described in this README are planned or partially implemented and may not yet be available or work as described.
+>
+> The documentation will be updated as development progresses. Please keep this in mind when evaluating or integrating the package.
 
+**Compatible with Godot 4.7.**
 
+An independently maintained package based on [GodotOceanWaves](https://github.com/2Retr0/GodotOceanWaves), designed to make the ocean rendering system easier to integrate into other Godot projects.
+
+This repository builds upon the original work by [2Retr0](https://github.com/2Retr0), incorporating contributions from [krautdev](https://github.com/krautdev) and [aallbrig](https://github.com/aallbrig), along with additional compatibility fixes and modifications.
+
+## Changes in This Package
+
+- Updated compatibility for Godot 4.7.
+- Uses `RenderingDevice.texture_get_data_async()` to retrieve displacement texture data asynchronously, avoiding a blocking readback on the main loop.
+- Packages the ocean system for integration into other Godot projects.
+
+This repository is an independent derivative of the original project. The original implementation and its development history belong to their respective authors.
+
+## Installation
+
+1. Download or clone this repository.
+2. Copy the `godot-ocean-waves` folder into your project's `res://packages/` directory.
+3. Open your project in Godot and allow the editor to import the files.
+4. Follow the usage instructions and scene setup provided by the project.
+
+The expected directory structure is:
+
+```text
+your-project/
+└── packages/
+    └── godot-ocean-waves/
+        ├── ...
+```
+
+Make sure the folder you copy contains the project's required scripts, shaders, resources, and scenes.
+
+## Example Scene
+
+The package includes example.tscn, a sample scene that demonstrates the ocean system in a working scene.
+
+Use it to inspect the setup, explore the available rendering features, and understand how the ocean is integrated into a Godot scene before adding it to your own project.
+
+Scene behavior and visual results may depend on the project's rendering settings, environment, and lighting configuration.
+
+## Features and Modifications
+
+### Water Height Queries
+
+The `godot_ocean_waves.gd` script provides a `get_height()` method for querying the water surface height at a world-space position:
+
+```gdscript
+get_height(world_pos: Vector3) -> float
+```
+
+This can be useful for gameplay systems that need to estimate the water surface height, such as floating objects, character interactions, and buoyancy calculations.
+
+The result depends on the wave simulation and the implementation's sampling accuracy.
+
+### Asynchronous Displacement Texture Readback
+
+The package uses `RenderingDevice.texture_get_data_async()` to retrieve displacement texture data asynchronously.
+
+Reading GPU texture data synchronously can introduce stalls while the CPU waits for GPU work to complete. An asynchronous readback helps avoid blocking the main loop while the data is being retrieved.
+
+The exact performance impact depends on the hardware, rendering workload, and how the returned data is processed.
+
+### Large-Scale Ocean Rendering
+
+The project includes a clipmap-based ocean rendering approach designed to cover large areas, with a documented target range of approximately 8 km and multiple levels of detail (LOD).
+
+Clipmaps allow the water surface to maintain detail near the camera while reducing geometric detail farther away.
+
+Actual coverage and visual quality depend on the scene configuration and rendering settings.
+
+### Waterline Fade
+
+A waterline fade effect is included to help soften the transition around the water surface.
+
+### Depth-Dependent Water Visibility
+
+The water shader includes a depth-dependent color absorption parameter:
+
+```glsl
+uniform vec3 depth_color_consumption = vec3(7.5, 22.0, 38.0);
+```
+
+This parameter controls how water color changes with depth. Adjusting it can help achieve different visual styles, from clearer water to darker, more strongly absorbing water.
+
+---
 
 # GodotOceanWaves
 An open ocean rendering experiment in the Godot Engine utilizing the inverse Fourier transform of directional ocean-wave spectra for wave generation. A concise set of parameters is exposed, allowing for scriptable, real-time modification of wave properties to emulate a wide-variety of ocean-wave environments.

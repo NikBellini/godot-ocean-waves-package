@@ -15,14 +15,10 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="OceanWaves"
-run/main_scene="res://main.tscn"
+run/main_scene="uid://35lxwq0hldna"
 config/features=PackedStringArray("4.7", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://icon.svg"
-
-[autoload]
-
-ImGuiRoot="*uid://dugmpnsxaagba"
 
 [debug]
 
@@ -39,10 +35,6 @@ window/vsync/vsync_mode=3
 window/quality/msaa_2d=0
 window/quality/msaa_3d=1
 window/show_image=false
-
-[editor_plugins]
-
-enabled=PackedStringArray("res://addons/imgui-godot/plugin.cfg")
 
 [input]
 
