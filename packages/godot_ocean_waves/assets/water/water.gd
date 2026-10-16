@@ -57,7 +57,7 @@ enum MeshQuality { LOW, HIGH, HIGH8K }
 ## Note: This doesn't reduce the frame stutter caused by FFT calculation, only
 ##       minimizes GPU time taken by it!
 
-@export_range(0, 60) var updates_per_second := 40.0 :
+@export_range(0, 60) var updates_per_second := 50.0 :
 	set(value):
 		next_update_time = next_update_time - (1.0/(updates_per_second + 1e-10) - 1.0/(value + 1e-10))
 		updates_per_second = value

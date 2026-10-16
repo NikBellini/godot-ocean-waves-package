@@ -13,8 +13,7 @@
 
 [sub_resource type="Resource" id="Resource_ycdy4"]
 script = ExtResource("5_g55gr")
-tile_length = Vector2(88, 88)
-wind_speed = 10.0
+foam_amount = 7.0
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_k6xhe"]
 
