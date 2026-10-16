@@ -44,7 +44,6 @@ mesh = ExtResource("3_7j8wi")
 skeleton = NodePath("")
 script = ExtResource("4_tkcsj")
 parameters = Array[ExtResource("5_g55gr")]([SubResource("Resource_ycdy4")])
-updates_per_second = 40.0
 
 [node name="WaterSprayEmitter" type="GPUParticles3D" parent="Water" unique_id=183013396]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 0, 0, 0)

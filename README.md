@@ -18,6 +18,7 @@ This repository builds upon the original work by [2Retr0](https://github.com/2Re
 - Updated compatibility for Godot 4.7.
 - Uses `RenderingDevice.texture_get_data_async()` to retrieve displacement texture data asynchronously, avoiding a blocking readback on the main loop.
 - Packages the ocean system for integration into other Godot projects.
+- Uses a single cascade for simplicity and improved height consistency when sampling the ocean texture. The original project uses three cascades, and although each cascade could have its own parameters, this implementation uses a single cascade to simplify the setup and avoid the reduced accuracy observed when retrieving ocean height with multiple cascades. This also keeps the Inspector intuitive, exposing only one set of parameters to the user. While a single cascade may make texture repetition more noticeable at greater distances, the resulting quality is acceptable for the intended use case.
 
 This repository is an independent derivative of the original project. The original implementation and its development history belong to their respective authors.
 
@@ -25,8 +26,8 @@ This repository is an independent derivative of the original project. The origin
 
 1. Download or clone this repository.
 2. Copy the `godot-ocean-waves` folder into your project's `res://packages/` directory.
-3. Open your project in Godot and allow the editor to import the files.
-4. Follow the usage instructions and scene setup provided by the project.
+3. Import the scene called `GodotOceanWaves` in the scene you want the ocean to appear.
+4. Edit the values directly on the `GodotOceanWaves` as you like.
 
 The expected directory structure is:
 
@@ -34,10 +35,9 @@ The expected directory structure is:
 your-project/
 └── packages/
     └── godot-ocean-waves/
+        ├── GodotOceanWaves.tscn
         ├── ...
 ```
-
-Make sure the folder you copy contains the project's required scripts, shaders, resources, and scenes.
 
 ## Example Scene
 
