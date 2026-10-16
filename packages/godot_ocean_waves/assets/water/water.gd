@@ -139,14 +139,14 @@ func _notification(what: int) -> void:
 #  displacement textures loading from gpu
 # =============================================================================
 
-var mutex: Mutex
+# var mutex: Mutex
 var thread: Thread
 
 #var _cpu_displacement_textures_buffer : Dictionary = {} # dict idx:img
 var _cpu_displacement_textures : Dictionary = {} # dict idx:img
 var _displacement_textures_total_update_interval:float = 1.0 / 120.0
 var _displacement_textures_update_time:float = 0.0
-var _actually_used_textures_idx:Array = [] # length == as there are cascades with height displacement > 0
+# var _actually_used_textures_idx:Array = [] # length == as there are cascades with height displacement > 0
 
 var _texture_loading_index:int = 0
 func _manage_cpu_displacement_textures_updates(delta) -> void:
@@ -192,7 +192,7 @@ func _setup_cpu_displacement_textures() -> void:
 			var img:Image = Image.create_from_data(wave_generator.map_size, wave_generator.map_size, false, Image.FORMAT_RGBAH, tex)
 			#_cpu_displacement_textures_buffer[i] = img
 			_cpu_displacement_textures[i] = img
-	mutex = Mutex.new()
+	# mutex = Mutex.new()
 
 var _img_async_buffer : Image
 var _img_async_image_idx:int = 0
@@ -238,12 +238,12 @@ func get_height(world_pos:Vector3, steps:int=3) -> float:
 	# each cascade is accessed in parameters array
 	# try to implement it just for the first cascade for now
 	var world_pos_xz = Vector2(world_pos.x,world_pos.z)
-	var cam_distance:float = (get_viewport().get_camera_3d().global_position - world_pos).length()
+	# var cam_distance:float = (get_viewport().get_camera_3d().global_position - world_pos).length()
 	var summed_height:float = 0.0
 	for cascade_index in _cpu_displacement_textures.keys():
 		var displacement_scale:float = parameters[cascade_index].displacement_scale
 		var tile_length:Vector2 = parameters[cascade_index].tile_length
-		var d:Vector2 = Vector2.ZERO
+		# var d:Vector2 = Vector2.ZERO
 		var x:Vector2 = world_pos_xz
 		var y:Vector2 = Vector2.ZERO
 		var y_raw:Color=Color.BLACK
