@@ -28,7 +28,7 @@ This repository is an independent derivative of the original project. The origin
 1. Download or clone this repository.
 2. Copy the `godot-ocean-waves` folder into your project's `res://packages/` directory.
 3. Import the scene called `GodotOceanWaves` in the scene you want the ocean to appear.
-4. Edit the values directly on the `GodotOceanWaves` as you like.
+4. Edit the values directly on the `GodotOceanWaves` node as you like.
 
 The expected directory structure is:
 
